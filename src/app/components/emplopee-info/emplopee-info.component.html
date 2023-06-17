@@ -1,0 +1,110 @@
+<div class="container mt-5">
+    <div class="heading d-flex justify-content-between align-items-center">
+        <p class="fs-1">Data</p>
+        <div class="filter-buttons d-flex gap-3">
+            <div class="dropdown-salary">
+                <select name="cars" id="salary-drop" (change)="salaryFilter($event)">
+                    <option value="empty" disabled selected>Select</option>
+                    <option value="l-h">Lowest to Highest</option>
+                    <option value="h-l">Highest to lowest</option>
+                </select>
+            </div>
+            <div class="dropdown-department">
+                <select name="cars" id="department-drop"  (change)="departmentFilter($event)">
+                    <option value="empty" disabled selected>Select</option>
+                    <option value="frontend">FrontEnd</option>
+                    <option value="backend">Backend</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Employees Name</th>
+                <th scope="col">Departments </th>
+                <th scope="col">Salary</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of employeeList; let i = index">
+                <th scope="row">{{i+1}}</th>
+                <td>{{data.name}}</td>
+                <td>{{data.department}}</td>
+                <td>{{data.salary}}</td>
+                <td>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        (click)="updateEmployee(data)">Update</button>
+                    <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal" (click)="deleteDetails(data.id)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="text-end">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add
+        </button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1  class="modal-title fs-5" id="exampleModalLabel">{{!edit?"Add New Employee":"Update the Employee Details"}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="profileForm">
+                    <div class="mb-3">
+                        <label for="exampleInputName" class="form-label">Name: </label>
+                        <input type="text" class="form-control" id="exampleInputName" formControlName="name"
+                            placeholder="Name of the employee">
+                        <span *ngIf="submitted && profileForm.get('name')?.hasError('required')"
+                            class="text-danger">Name is Required</span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputName" class="form-label">Department: </label>
+                        <textarea class="form-control" id="exampleInputName" formControlName="department"
+                            placeholder="Department name must be (BackEnd, FrontEnd)"></textarea>
+                        <span *ngIf="submitted && profileForm.get('department')?.hasError('required')"
+                            class="text-danger">Department is Required</span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputName" class="form-label">Salary: </label>
+                        <input type="number" class="form-control" id="exampleInputSalary" formControlName="salary"
+                            placeholder="Salary">
+                        <span *ngIf="submitted && profileForm.get('salary')?.hasError('required')"
+                            class="text-danger">Salary is Required</span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="modalClose" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+                <button *ngIf="!edit" type="button" class="btn btn-primary" (click)="addEmployee()">Add
+                    Employee</button>
+                <button *ngIf="edit" type="button" class="btn btn-primary" (click)="editData()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-5">
+                <span class="fs-2">Are you sure ?</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeDeleteModal"
+                    data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" (click)="deleteThroughModal()">Yes Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

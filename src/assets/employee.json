@@ -1,0 +1,10 @@
+{
+    "data":[
+        {
+            "id":1,
+            "name": "shubham",
+            "department":"Frontend",
+            "salary":30000
+        }
+    ]
+}
